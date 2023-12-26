@@ -1,28 +1,70 @@
-import { useState } from "react";
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom'
+import { addInfo } from '../pages/detailsSlice';
 
 const Input = () => {
 
-    const [color,setColor]=useState();
-    const [color1,setColor1]=useState();
+    const [name,setName]=useState();
+    const [college,setCollege]=useState();
+    const [location,setLocation]=useState();
+    const [plus,setPlus]=useState(null);
+    // const [minus,setMinus]=useState(0);
 
-    const colorSetter = (e) => {
-        setColor(e.target.value);
-    }
-    const colorSearch = () => {
-        setColor1(color);
-    }
-    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    return (
+    const movetoOutput = () => {
+        navigate("/output")
+    }
+
+    const nameFunction = (e) => {
+        setName(e.target.value);
+        // dispatch(addInfo(name))
+    }
+    const collegeFunction = (e) => {
+        setCollege(e.target.value)
+        // dispatch(addInfo(college))
+    }
+    const locationFunction = (e) => {
+        setLocation(e.target.value);
+        // dispatch(addInfo(location))
+    }
+
+    dispatch(addInfo({
+        name:name,
+        college:college,
+        location:location,
+    }))
+
+    const increase = () => {
+        setPlus(plus+1);
+    }
+    const decrease = () => {
+        setPlus(plus-1);
+    }
+
+  return (
+    <div>
+        <form onSubmit={(e)=>e.preventDefault()}>
+            <label>Enter Name:</label>
+            <input type="text" placeholder='name' onChange={nameFunction}/><br />
+            <label htmlFor="">Enter college Name</label>
+            <input type="text" placeholder='college name' onChange={collegeFunction}/><br />
+            <label htmlFor="">Enter Location</label>
+            <input type="text" placeholder='location' onChange={locationFunction}/><br />
+        </form>
+        <button onClick={movetoOutput} className='bg-red-800 text-white rounded-lg border-collapse px-4 py-2'>submit</button>
+
         <div>
             <div>
-               <input type="text" placeholder="Search...." className="px-6 py-3 bg-[#f0f0f0] border-none" onChange={colorSetter} />
-               <button onClick={colorSearch}>Search</button>
+                {plus<0?0:plus}
             </div>
-            <div style={{backgroundColor:color1,height:'400px',width:'400px'}}>
-                
-            </div>
+            <button onClick={increase}>Plus</button>
+            <button onClick={decrease}>minus</button>
         </div>
-    )
+    </div>
+  )
 }
+
 export default Input;
